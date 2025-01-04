@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Chatbot RAG Register</title>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"
+    />
+    <link rel="stylesheet" href="styles/login.css" />
+  </head>
+  <body>
+    <form action="/new_user" method="post">
+      <nav class="navbar navbar-expand-lg navbar-light">
+        <div class="collapse navbar-collapse" id="navbarNav">
+          <ul class="navbar-nav">
+            <li class="nav-item">
+              <a class="nav-link" href="/">Home</a>
+            </li>
+          </ul>
+        </div>
+      </nav>
+      {% if error %}
+      <div class="alert alert-danger" role="alert">{{ error }}</div>
+      {% endif %} {% if msg %}
+      <div class="alert alert-success" role="success">{{ msg }}</div>
+      {% endif %}
+      <h2>Register</h2>
+      <label for="email">Email:</label>
+      <input
+        type="email"
+        id="email"
+        name="email"
+        value="austinlight.fl@gmail.com"
+        required
+      />
+
+      <label for="password">Password:</label>
+      <input
+        type="password"
+        id="password"
+        name="password"
+        value="password"
+        required
+      />
+
+      <label for="project_name">Project Name:</label>
+      <input
+        type="text"
+        id="project_name"
+        name="project_name"
+        value="Chatbot"
+        required
+      />
+
+      <label for="team_name">Team Name:</label>
+      <input
+        type="text"
+        id="team_name"
+        name="team_name"
+        value="Applied ML"
+        required
+      />
+
+      <label for="account_type">Account Type:</label>
+      <input
+        type="text"
+        id="account_type"
+        name="account_type"
+        value="dev"
+        required
+      />
+
+      <label for="openai_api_key_type">OpenAI API Key Type:</label>
+      <input
+        type="text"
+        id="openai_api_key_type"
+        name="openai_api_key_type"
+        value="dev"
+        required
+      />
+
+      <label for="openai_api_key_name">OpenAI API Key Name:</label>
+      <input
+        type="text"
+        id="openai_api_key_name"
+        name="openai_api_key_name"
+        value="dev"
+        required
+      />
+
+      <input type="submit" value="Submit" />
+    </form>
+  </body>
+</html>

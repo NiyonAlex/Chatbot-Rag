@@ -1,0 +1,35 @@
+services:
+  dynamodb-local:
+    command: "-jar DynamoDBLocal.jar -sharedDb -dbPath ./data"
+    image: "amazon/dynamodb-local:latest"
+    # boto3.resource() error when endpoint_url parameter contains an underscore (see https://github.com/boto/boto3/issues/703)
+    container_name: dynamodb
+    ports:
+      - "8000:8000"
+    volumes:
+      - "../docker/dynamodb:/home/dynamodblocal/data"
+    working_dir: /home/dynamodblocal
+  postgres-local:
+    image: "postgres:latest"
+    container_name: postres
+    environment:
+      POSTGRES_DB: chatbot-rag
+      POSTGRES_USER: user
+      POSTGRES_PASSWORD: password
+    volumes:
+      - "pgdata:/var/lib/postgresql/data"
+    ports:
+      - "5432:5432"
+  redis-local:
+    image: "redis:latest"
+    container_name: redis
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis_data:/data
+
+volumes:
+  pgdata:
+    external: false
+  redis_data:
+    external: false

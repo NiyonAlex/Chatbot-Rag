@@ -1,0 +1,68 @@
+services:
+  api:
+    build:
+      context: ../
+    environment:
+      - PORT=80
+      - AWS_REGION=us-west-2
+      - RUN_LOCALLY=true
+      - POSTGRES_SERVER=postgres
+      - DYNAMO_DB_ENDPOINT=http://dynamodb:8000
+      - REDIS_HOST=redis
+      - AWS_ACCESS_KEY_ID=myFakeId
+      - AWS_SECRET_ACCESS_KEY=myFakeSecreteKey
+    env_file:
+      - ../.env
+    ports:
+      - "80"
+    depends_on:
+      - dynamodb
+      - postgres
+      - redis
+
+  dynamodb:
+    command: "-jar DynamoDBLocal.jar -sharedDb -dbPath ./data"
+    image: "amazon/dynamodb-local:latest"
+    expose:
+      - "8000"
+    volumes:
+      - "../docker/dynamodb:/home/dynamodblocal/data"
+    working_dir: /home/dynamodblocal
+
+  postgres:
+    image: "postgres:latest"
+    environment:
+      POSTGRES_DB: chatbot-rag
+      POSTGRES_USER: user
+      POSTGRES_PASSWORD: password
+    volumes:
+      - "run_locally_pgdata:/var/lib/postgresql/data"
+    expose:
+      - "5432"
+
+  redis:
+    image: "redis:latest"
+    expose:
+      - "6379"
+    volumes:
+      - run_locally_redis_data:/data
+
+  nginx:
+    image: nginx:latest
+    volumes:
+      - ./nginx.conf:/etc/nginx/nginx.conf:ro
+    depends_on:
+      - api
+    ports:
+      - "8080:80"
+
+volumes:
+  run_locally_pgdata:
+    external: false
+  run_locally_redis_data:
+    external: false
+
+networks:
+  default:
+    driver: bridge
+    name: chatbot-rag
